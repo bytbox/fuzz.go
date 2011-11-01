@@ -1,7 +1,6 @@
 package fuzz
 
 import (
-	"os"
 	"time"
 )
 
@@ -12,16 +11,16 @@ const (
 	FUZZ_NONE = iota
 
 	// Time-scale fuzzing
-	FUZZ_FIVE
-	FUZZ_TEN
-	FUZZ_QUARTER
-	FUZZ_HALF
+	FUZZ_FIVE // to the nearest five minutes
+	FUZZ_QUARTER // to the nearest quarter hour
 	FUZZ_HOUR
 	FUZZ_PERIOD // afternoon, evening, etc...
 
 	// Date-scale fuzzing
 	FUZZ_MONTH
+	FUZZ_MONTH_ONLY // FUZZ_MONTH without "early" etc.
 	FUZZ_YEAR
+	FUZZ_YEAR_ONLY // FUZZ_YEAR without "early" etc.
 
 	// Relative fuzzing
 	REL_PRECISE
@@ -35,15 +34,14 @@ const (
 	REL_YEAR
 )
 
-type FuzzyTime struct {
-	time.Time
+type Fuzzer interface {
+	Fuzz(t *time.Time) string
 }
 
-func (t *FuzzyTime) Fuzz(f Fuzziness) string {
-	return ""
+type NoFuzzer struct{}
+var FuzzNone = NoFuzzer{}
+func (NoFuzzer) Fuzz(t *time.Time) string {
+	return t.String()
 }
 
-func Parse(str string) (*FuzzyTime, os.Error) {
-	return nil, nil
-}
 
