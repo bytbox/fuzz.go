@@ -35,14 +35,8 @@ const (
 	REL_YEAR
 )
 
-var fuzziness = FUZZ_NONE
-
 type FuzzyTime struct {
 	time.Time
-}
-
-func (t *FuzzyTime) String() string {
-	return ""
 }
 
 func (t *FuzzyTime) Fuzz(f Fuzziness) string {
