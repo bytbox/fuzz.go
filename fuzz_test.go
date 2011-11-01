@@ -5,22 +5,19 @@ import (
 )
 
 type FuzzTest struct {
-
+	Time      FuzzyTime
+	FNess     Fuzziness
+	Output    string
 }
 
 var fuzzTests = []FuzzTest{}
 
 func TestFuzz(t *testing.T) {
-
-}
-
-type ParseTest struct {
-
-}
-
-var parseTests = []ParseTest{}
-
-func TestParse(t *testing.T) {
-	Parse("")
+	for _, test := range fuzzTests {
+		res := test.Time.Fuzz(test.FNess)
+		if res != test.Output {
+			t.Errorf("%s != %s", res, test.Output)
+		}
+	}
 }
 
