@@ -15,6 +15,9 @@ var AbsTestTime, _ = time.Parse(time.RFC822, "06 Feb 09 1129 EST")
 
 var fuzzTests = []FuzzTest{
 	FuzzTest{AbsTestTime, FuzzNone, "11:29:00 EST, February 6, 2009"},
+	FuzzTest{AbsTestTime, Cutoff("Year", "Month"), "February 2009"},
+	FuzzTest{AbsTestTime, Cutoff("Year", "Minute"), "11:29, February 6, 2009"},
+	FuzzTest{AbsTestTime, Cutoff("Month", "Minute"), "11:29, February 6"},
 }
 
 func TestFuzz(t *testing.T) {

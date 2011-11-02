@@ -1,6 +1,6 @@
 package fuzz
 
-var format = "15:04:05 MST, January 2{Year|{Day|, }2006}"
+var format = "{Hour|15{Minute|:04{Second|:05}}{Zone| MST}, }{Month|January }{Day|2}{Year|{Day|, }2006}"
 
 const (
 	cs_blank = iota
@@ -24,7 +24,7 @@ func compileFormat(f string, enabled []string) string {
 		return false
 	}
 
-	cState := compilerState{}
+	cState := &compilerState{}
 	state := cs_blank
 	fname := ""
 	res := "" // TODO use an actual buffer
@@ -35,14 +35,13 @@ func compileFormat(f string, enabled []string) string {
 				state = cs_field
 			} else if c == '}' {
 				// pop a state off the stack
-				oldState := cState
-				cState = *oldState.prev
-				if isEnabled(oldState.fname) {
-					// append to oldState.buf
-					res = oldState.buf + res
+				if isEnabled(cState.fname) {
+					// append to cState.buf
+					res = cState.buf + res
 				} else {
-					res = oldState.buf
+					res = cState.buf
 				}
+				cState = cState.prev
 			} else {
 				// append this plain-text to the result
 				res += string(c)
@@ -50,16 +49,16 @@ func compileFormat(f string, enabled []string) string {
 		case cs_field:
 			if c == '|' {
 				// push this state and start over
-				newState := compilerState {
+				newState := &compilerState {
 					state: state,
 					buf: res,
 					fname: fname,
-					prev: &cState,
+					prev: cState,
 				}
 				cState = newState
 				state = cs_blank
 				fname = ""
-				res=""
+				res = ""
 			} else {
 				fname += string(c)
 			}
