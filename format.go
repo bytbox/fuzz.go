@@ -14,7 +14,7 @@ type compilerState struct {
 	prev  *compilerState
 }
 
-func compileFormat(f string, enabled []string) string {
+func compileFormat(f string, enabled []string) (string, error) {
 	isEnabled := func(str string) bool {
 		for _, s := range enabled {
 			if s == str {
@@ -66,5 +66,5 @@ func compileFormat(f string, enabled []string) string {
 			panic("Bad state")
 		}
 	}
-	return res
+	return res, nil
 }

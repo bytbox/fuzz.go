@@ -83,7 +83,13 @@ func (f CutoffFuzzer) Fuzz(t *time.Time) string {
 			stopIndex = i
 		}
 	}
-	return t.Format(compileFormat(format, Fields[startIndex:stopIndex+1]))
+	fmt, _ := compileFormat(format, Fields[startIndex:stopIndex+1])
+	return t.Format(fmt)
+}
+
+type VagueFuzzer struct {
+	StartField string
+	StopField  string
 }
 
 type RelativeFuzzer struct {

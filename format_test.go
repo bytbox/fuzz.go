@@ -20,7 +20,11 @@ var formatTests = []formatTest{
 
 func TestFormat(t *testing.T) {
 	for _, test := range formatTests {
-		res := compileFormat(test.fmt, test.fld)
+		res, err := compileFormat(test.fmt, test.fld)
+		if err != nil {
+			t.Errorf("ERR: %s", err.Error())
+			continue
+		}
 		if res != test.res {
 			t.Errorf("%s != %s", res, test.res)
 		}
