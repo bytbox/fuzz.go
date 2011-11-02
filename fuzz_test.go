@@ -6,15 +6,15 @@ import (
 )
 
 type FuzzTest struct {
-	Time      *time.Time
-	Fz        Fuzzer
-	Output    string
+	Time   *time.Time
+	Fz     Fuzzer
+	Output string
 }
 
-var TestTime, _ = time.Parse(time.RFC822, "02 Jan 06 1504 MST")
+var AbsTestTime, _ = time.Parse(time.RFC822, "06 Feb 09 1129 EST")
 
 var fuzzTests = []FuzzTest{
-	FuzzTest{TestTime, FuzzNone, "Mon Jan  2 15:04:00 MST 2006"},
+	FuzzTest{AbsTestTime, FuzzNone, "11:29:00 EST, February 6, 2009"},
 }
 
 func TestFuzz(t *testing.T) {
@@ -25,4 +25,3 @@ func TestFuzz(t *testing.T) {
 		}
 	}
 }
-

@@ -1,11 +1,11 @@
 package fuzz
 
 import (
-	"os"
+	"errors"
 	"time"
 )
 
-func Parse(str string) (*time.Time, os.Error) {
-	return nil, os.NewError("hi")
+func Parse(str string) (*time.Time, error) {
+	// tokenize str
+	return nil, errors.New("hi")
 }
-
