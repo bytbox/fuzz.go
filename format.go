@@ -49,11 +49,11 @@ func compileFormat(f string, enabled []string) string {
 		case cs_field:
 			if c == '|' {
 				// push this state and start over
-				newState := &compilerState {
+				newState := &compilerState{
 					state: state,
-					buf: res,
+					buf:   res,
 					fname: fname,
-					prev: cState,
+					prev:  cState,
 				}
 				cState = newState
 				state = cs_blank
