@@ -19,24 +19,8 @@ import (
 type Fuzziness uint8
 
 const (
-	// No fuzzing
-	FUZZ_NONE = iota
-
-	// Time-scale fuzzing
-	FUZZ_FIVE    // to the nearest five minutes
-	FUZZ_QUARTER // to the nearest quarter hour
-	FUZZ_HOUR    // to the nearest hour
-	FUZZ_PERIOD  // afternoon, evening, etc...
-
-	// Date-scale fuzzing
-	FUZZ_MONTH
-	FUZZ_MONTH_ONLY // FUZZ_MONTH without "early" etc.
-	FUZZ_YEAR
-	FUZZ_YEAR_ONLY // FUZZ_YEAR without "early" etc.
-
 	// Relative fuzzing
-	REL_PRECISE
-	REL_DEFAULT // some sensible default, depending on the distance
+	REL_DEFAULT = iota // some sensible default, depending on the distance
 	REL_SECOND
 	REL_MINUTE
 	REL_HOUR
@@ -92,6 +76,33 @@ type VagueFuzzer struct {
 	StopField  string
 }
 
-type RelativeFuzzer struct {
+func Vague(start string, stop string) VagueFuzzer {
+	return VagueFuzzer{
+		start,
+		stop,
+	}
+}
 
+func (f VagueFuzzer) Fuzz(t *time.Time) string {
+	return ""
+}
+
+// Fuzzes relative to the current time
+type RelativeFuzzer struct {
+	StartField string
+}
+
+func Relative(start string) RelativeFuzzer {
+	return RelativeFuzzer{
+		StartField: start,
+	}
+}
+
+func (f RelativeFuzzer) Fuzz(t *time.Time) string {
+	return ""
+}
+
+// Perform a sensible amount of relative fuzzing
+func RelativeFuzz(t *time.Time) string {
+	return ""
 }
